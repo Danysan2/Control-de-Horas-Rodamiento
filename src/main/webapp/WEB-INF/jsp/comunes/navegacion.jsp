@@ -22,14 +22,8 @@
                         <a class="nav-link active" aria-current="page" href="${urlInicio}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${urlAgregar}">Agregar empleados</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                    </li>
+                        <a class="nav-link" href="${urlAgregar}">Agregar Registros</a>
+
                 </ul>
             </div>
         </div>

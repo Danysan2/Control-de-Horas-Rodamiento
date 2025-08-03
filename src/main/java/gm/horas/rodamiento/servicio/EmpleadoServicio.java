@@ -2,6 +2,9 @@ package gm.horas.rodamiento.servicio;
 
 import gm.horas.rodamiento.modelo.Empleado;
 import gm.horas.rodamiento.repositorio.EmpleadoRepositorio;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,9 @@ public class EmpleadoServicio implements IEmpleadoServicio{
 
     @Autowired
     private EmpleadoRepositorio empleadoRespositorio;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<Empleado> listarRegistros() {
@@ -45,4 +51,11 @@ public class EmpleadoServicio implements IEmpleadoServicio{
     public List<Empleado> buscarPorFecha(Date fecha) {
         return empleadoRespositorio.findByFecha(fecha);
     }
+
+    @Transactional
+    public void eliminarTodoYResetearId() {
+        empleadoRespositorio.deleteAll();
+        entityManager.createNativeQuery("ALTER TABLE empleado AUTO_INCREMENT = 1").executeUpdate();
+    }
+
 }
