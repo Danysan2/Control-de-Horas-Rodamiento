@@ -59,7 +59,10 @@
     </table>
 </div>
 <div class="text-center mb-4" style="text-center">
-    <button type="button" class="btn btn-success btn-lg">Exportar a excel</button>
+    <a href="${pageContext.request.contextPath}/exportarExcel" class="btn btn-success btn-lg">Exportar a excel</a>
+    <a href="${pageContext.request.contextPath}/eliminarTodo" class="btn btn-danger">
+        Eliminar todo y resetear ID
+    </a>
     <c:url var="urlExportarPDF" value="/exportarPDF">
         <c:param name="idEmpleado" value="${empleado.idEmpleado}" />
     </c:url>

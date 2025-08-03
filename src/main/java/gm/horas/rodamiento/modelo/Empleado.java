@@ -1,9 +1,6 @@
 package gm.horas.rodamiento.modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,5 +25,7 @@ public class Empleado {
     String actividad;
     int tiempoConCliente;
     int pago;
+    @Column(name = "total_Horas_Rodamiento")
+    private Integer totalHorasRodamiento;
 
 }

@@ -2,6 +2,7 @@ package gm.horas.rodamiento.controlador;
 
 import gm.horas.rodamiento.modelo.Empleado;
 import gm.horas.rodamiento.servicio.EmpleadoServicio;
+import gm.horas.rodamiento.servicio.ExportarExcelService;
 import gm.horas.rodamiento.servicio.ExportarPdfService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,6 +27,9 @@ public class IndexControlador {
 
     @Autowired
     EmpleadoServicio empleadoServicio;
+
+    @Autowired
+    ExportarExcelService exportarExcelService;
 
     @RequestMapping(value = "/" , method = RequestMethod.GET)
     public String iniciar(ModelMap modelo){
@@ -59,10 +63,14 @@ public class IndexControlador {
         int regreso = llegadaEmpresa - salidaCliente;
 
         // Pago bien calculado
-        int pago = (ida + regreso) * 9600;
+        int pago = (ida + regreso) * 9850 / 60;
+
+        // Total horas rodamiento
+        int totalHorasRodamiento = ida + regreso;
 
         empleado.setTiempoConCliente(tiempoConCliente);
         empleado.setPago(pago);
+        empleado.setTotalHorasRodamiento(totalHorasRodamiento);
 
         logger.info("Tiempo con cliente (min): " + tiempoConCliente);
         logger.info("Pago calculado: " + pago);
@@ -97,11 +105,16 @@ public class IndexControlador {
         int ida = llegadaCliente - salidaEmpresa;
         int regreso = llegadaEmpresa - salidaCliente;
 
-        // Pago bien calculado
-        int pago = (ida + regreso) * 9600;
+
+        int pago = (ida + regreso) * 9850;
+
+        // Total horas rodamiento
+        int totalHorasRodamiento = ida + regreso;
+
 
         empleado.setTiempoConCliente(tiempoConCliente);
         empleado.setPago(pago);
+        empleado.setTotalHorasRodamiento(totalHorasRodamiento);
 
         logger.info("Tiempo con cliente (min): " + tiempoConCliente);
         logger.info("Pago calculado: " + pago);
@@ -160,5 +173,17 @@ public class IndexControlador {
         response.setHeader(headerKey, headerValue);
 
         exportarPdfService.exportarCuentaCobro(response, empleados);
+    }
+
+    @RequestMapping("/exportarExcel")
+    public void exportarExcel(HttpServletResponse response) throws Exception {
+        List<Empleado> empleados = empleadoServicio.listarRegistros();
+        exportarExcelService.exportarRodamiento(response, empleados);
+    }
+
+    @RequestMapping(value = "/eliminarTodo", method = RequestMethod.GET)
+    public String eliminarTodo() {
+        empleadoServicio.eliminarTodoYResetearId();
+        return "redirect:/";
     }
 }
